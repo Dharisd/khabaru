@@ -1,4 +1,5 @@
 import mysql.connector
+import time
 
 #define the functions
 
@@ -23,16 +24,26 @@ while t == 0:
 			print("now fetching vfp" )
 			psm = s.psm(int(ids["psm"]) + i)
 			print("now fetching psm")
+
+			
+		
+
+			add = c.add_db(conn,mihaaru,ids)
+			add = c.add_db(conn,avas,ids)
+			add = c.add_db(conn,mihaaru,ids)
+			add = c.add_db(conn,vfp,ids)
+			add = c.add_db(conn,psm,ids)
+			for x in sun:
+				c.add_db(conn,x,ids)
+
 		except:
 			print("error")
 
-		add = c.add_db(conn,mihaaru,ids)
-		add = c.add_db(conn,avas,ids)
-		add = c.add_db(conn,mihaaru,ids)
-		add = c.add_db(conn,vfp,ids)
-		add = c.add_db(conn,psm,ids)
-		for x in sun:
-			c.add_db(conn,x,ids)
+
+			
+		
+
+		time.sleep(5)
 
 	
 
