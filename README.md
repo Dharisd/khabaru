@@ -13,7 +13,7 @@ Now create a mysql db with
 ```
 user = "root"
 password = ""
-dbname ="aricledb"
+dbname ="articledb"
 
 ```
 
