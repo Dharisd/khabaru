@@ -10,10 +10,21 @@ class utils(object):
 		
 
 	#parse the date into python datetime object
-	def ParseDate(self,unparsed_date):
-		#all this function has to is to change the dhivehi month into english month and then feed into dateparser
+	def ParseDate(self,unparsed_date,source):
+
 		months_dhivehi= ["ޖަނަވަރީ", "ފެބްރުއަރީ", "މާޗް", "އޭޕްރިލް", "މެއި", "ޖޫން", "ޖުލައި", "އޯގަސްޓް", "ސެޕްޓެމްބަރ", "އޮކްޓޯބަރ", "ނޮވެމްބަރ", "ޑިސެމްބަރ"]
 		months_english = ["january","february","March","april","may","june","july","august","september","october","november"]
+
+
+		if source == "vfp" and ("ގަޑިއިރު ކުރިން" in unparsed_date):
+			time_english = unparsed_date.replace("ގަޑިއިރު ކުރިން","hours ago")
+			date = dateparser.parse(time_english)
+			return(date)
+		elif (source == "vfp"):
+			months_dhivehi[7] = "އޯގަސްޓު"
+
+
+		#all this function has to is to change the dhivehi month into english month and then feed into dateparser
 		for month in months_dhivehi:
 			if month in unparsed_date:
 				month_n = months_dhivehi.index(month)
@@ -22,21 +33,26 @@ class utils(object):
 				date_english = unparsed_date.replace(month, month_english)
 				datetime_object = dateparser.parse(date_english) 
 				return(datetime_object)
-		return("error")
+		try:
+			date = dateparser.parse(unparsed_date)
+			return(date)
+		except:
+			return("error")
 
 
 
 	#this functions must parse dhivehi news categories into english categories
 	def ParseCategory(self,unparsed_category):
-		categories_dhivehi = ["ވާހަކަ","ވީޑިއޯ","ދުނިޔެ","ކޮލަމް","ވިޔަފާރި","މުނިފޫހިފިލުވުން","ލައިފްސްޓައިލް","ކުޅިވަރު","ރިޕޯޓް","ޚަބަރު"]
-		categories_english = ["story","video","world","collumn","businness","entertainment","lifestyle","sports","report","news"]
+		categories_dhivehi = ["ހަބަރު","ފޭޑި","ވާހަކަ","ވީޑިއޯ","ދުނިޔެ","ކޮލަމް","ވިޔަފާރި","މުނިފޫހިފިލުވުން","ލައިފްސްޓައިލް","ކުޅިވަރު","ރިޕޯޓް","ޚަބަރު"]
+		categories_english = ["news","lifestyle","story","video","world","collumn","business","entertainment","lifestyle","sports","report","news"]
 		#loop through all categories
 		for category in categories_dhivehi:
 			if category in unparsed_category:
 				category_n = categories_dhivehi.index(category)
 				category_english = categories_english[category_n]
 				return(category_english)
-
+		if unparsed_category in categories_english:
+			return(unparsed_category)
 		return("error")
 	
 
@@ -69,7 +85,7 @@ class utils(object):
 
 
 	#use all parsers and return a dictionary
-	def ParseData(self,url,headline,image,author,category,article):
+	def ParseData(self,url,headline,image,author,category,article,date,source,ids):
 		article_data = {}
 		article_data["url"] = url
 		article_data["headline"] = self.ParseHeadline(headline)
@@ -77,6 +93,9 @@ class utils(object):
 		article_data["author"] = self.ParseAuthor(author)
 		article_data["category"] = self.ParseCategory(category)
 		article_data["article"] = self.ParseArticle(article)
+		article_data["datetime"] = self.ParseDate(date,source)
+		article_data["source"] = source
+		article_data["id"] = ids
 		return (article_data)
 
 
