@@ -1,10 +1,10 @@
 # News scraper
 currently supports
 
-1.Mihaaru
-2.psm
-3.avas
-4.vfp(cnm)
+1. Mihaaru
+2. psm
+3. avas
+4. vfp(cnm)
 
 
 ## setup
@@ -27,12 +27,12 @@ python db_setup.py
 This will ask for artcleids for sources.obtain this by going into sources home page and getting article id of a recent  article 
 
 
-#How it works
+# How it works
 
-##For sites that dont provide api
+## For sites that dont provide api
 scarpercontrol gets the last articleid from the db and then tries to scrape the next 5 article ids.If articles are found it saves the highest artcile id 
 
-#For sites that Provide api 
+# For sites that Provide api 
 its juts parses the data 
 
 
@@ -59,7 +59,7 @@ __ScraperControl.py__: basically does the scraping process (gets the data rom sc
 
 
 
-#To start Scraping
+# To start Scraping
 ``` 
 python ScraperControl.py
 
