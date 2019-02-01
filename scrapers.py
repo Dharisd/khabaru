@@ -92,12 +92,14 @@ class scrapers(object):
     	if len(parsed_html) >= 3:
     		headline = (parsed_html.h1).get_text()
     		image = parsed_html.find("figure").find("img")["src"] # stupid lazy oneliner,but it works might have to redo it
-    		time_tag  = parsed_html.find("div",{"class","ltr text-sm text-grey-dark pl-2"}).find("timeago")["datetime"]
+    		time_tag  = parsed_html.find("div",{"class","ltr text-sm text-grey-dark pl-2"}).find("timeago")["datetime"] #get the date/time
     		#author = parsed_html.find("div",{"class":"font-waheed text-grey ml-3 pl-3 text-lg border-l border-grey border-dotted"}).find('a').get_text() #me back again with my lazy onliners
-    		author = ""
+    		author = "" #author empty as rrors sometimes occur during fetching this
     		category = parsed_html.find("div",{"class":"rtl container mx-auto mb-7 mt-8 px-4 md:px-0"}).find("a").get_text()
 
-    		article_div = parsed_html.find("div",{"class","w-full md:w-5/6"}).find_all("p")
+
+            #paragraphs are seperate so loops and adds them up
+       		article_div = parsed_html.find("div",{"class","w-full md:w-5/6"}).find_all("p")
     		article = ""
     		for x in article_div:
     			article += "\n" + x.get_text()
@@ -108,25 +110,26 @@ class scrapers(object):
     		return(valid_data)
 
     #pretty similar to others but date is weird
+    #vfp is cnm now
     def vfp(self,id):
-        url = "https://vfp.mv/f/?id=" + str(id)
+        url = "https://cnm.mv/f/?id=" + str(id)
         html = requests.get(url)
         parsed_html = BeautifulSoup(html.text,'html.parser')
-        if len(parsed_html) >= 13: 
+        if len(parsed_html) >= 5: 
         #get individual attributes
-            headline = parsed_html.find("div",{"class":"artH"}).get_text()
-            unparsed_image = parsed_html.find("img",{"style":"width:100%;max-height:522px; margin-top:1em"})["src"]
-            image = "https://vfp.mv" + unparsed_image[2:]
-            time_div = parsed_html.find("span",{"class":"ACom"}).get_text()
+            headline = (parsed_html.h1).get_text()
+            unparsed_image = parsed_html.find("img",{"class":"w-100"})["src"]
+            image = "https://cnm.mv" + unparsed_image[2:]
+            time_div = parsed_html.find("i",{"class":"fa fa-clock-o pr-2"}).get_text()
             time = time_div.split("|",1)[0]
             author = ""
-            category = parsed_html.find("span",{"class":"Atime"}).find("a").get_text()
+            category = parsed_html.find("div",{"class":"col-12 py-3 t5"}).find("a").get_text()
             article = parsed_html.find("div",{"class":"artT"}).get_text()
 
             valid_data = self.u.ParseData(url,headline,image,author,category,article,time,"vfp",id)
-
             return valid_data
         else:
+            print(parsed_html)
             return("error")
 
 
@@ -137,7 +140,7 @@ class scrapers(object):
             parsed_html = BeautifulSoup(html.text,'html.parser')
         except:
             return("error")
-        if len(parsed_html) >= 21:
+        if len(parsed_html) >= 21: #weird lentghs
             #parse individual elements
             headline = (parsed_html.h1).get_text()
             image = parsed_html.find("img",{"class":"w-full"})["src"]

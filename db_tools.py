@@ -6,30 +6,33 @@ class DbTools(object):
 		self.sources = ["mihaaru","sun","avas","vfp","psm"]
 
 	#the official db connector
+	'''this method of storing password in txt file needs to be avoided paswords need to be  stored in enviroment variable'''
 	def ConnectDb(self,dbname):
 		db = mysql.connector.connect(
 			host="127.0.0.1",
 			user="root",
-			password = "",
+			password = "1234",
 			database = dbname
 			)
 		return(db)
 
 
 	#initilaise the db 
-	def InitDb(self):
-		db = ConnectDb("")
+	def InitDb(self):                                                                                                                         
+		db = self.ConnectDb("")
 		c = db.cursor()
 		try:
 			c.execute("CREATE DATABASE articledb")
 		except:
 			print("db already exists")
-		db = ConnectDb("articledb")
+		db = self.ConnectDb("articledb")
 		c = db.cursor()
 
 		c.execute("CREATE TABLE last_update (id INT AUTO_INCREMENT PRIMARY KEY,source VARCHAR(255), last_update VARCHAR(255))")
 		source_sql = "INSERT INTO last_update (source,last_update) VALUES(%s,%s)"
 
+
+		#loop over all sources to get the id from which we start to scrape from  (to obtain thos goto the sources home pageand click on an article and get its id)
 		for x in self.sources:
 			last =  input("enter highest for " + x)
 			print(x+":",last)
@@ -40,6 +43,8 @@ class DbTools(object):
 		c.execute("CREATE TABLE content_db (id INT AUTO_INCREMENT PRIMARY KEY,source VARCHAR(255), url VARCHAR(255),headline VARCHAR(255),image VARCHAR(255),author VARCHAR(255),datetime TIME(6),category VARCHAR(255),article VARCHAR(3000),article_id VARCHAR(255))")
 		db.commit()
 
+
+	#returns the highest article id the db contains for the source
 	def last_update(self,conn):
 		#get the last_update for every source
 		sql = "SELECT last_update FROM last_update"
@@ -56,7 +61,7 @@ class DbTools(object):
 		#sets the highest id
 	def SetHighest(self,conn,source,ids):
 		c = conn.cursor()
-		edit_sql = "UPDATE last_update SET last_update = %s where source = %s"
+		edit_sql = "UPDATE last_update SET last_update = %s where source = %s" # weak security
 		values = (ids,source)
 		c.execute(edit_sql,values)
 		conn.commit()
@@ -67,7 +72,9 @@ class DbTools(object):
 	def add_db(self,conn,valid_data,ids):
 		c = conn.cursor()
 		
+		#checks for the essential attributes
 		if valid_data != None and valid_data["headline"] != "error" and valid_data["url"] != "error" and valid_data["article"] != "error":
+			# if  the essential data is valid checks wether the url is already present  
 			select_sql = "SELECT * FROM content_db WHERE url=%s"
 			url_value = valid_data["url"],
 			c.execute(select_sql,url_value)
@@ -75,9 +82,12 @@ class DbTools(object):
 			c_highest = ids
 			source = valid_data["source"]
 			#print(source,c_highest[source]," ",valid_data["id"])
-			if int(c_highest[source]) < valid_data["id"]:
-				self.SetHighest(conn,source,valid_data["id"])
 
+			#this checks whether the provided id is the highest for the source
+			if int(c_highest[source]) < valid_data["id"]:
+				self.SetHighest(conn,source,valid_data["id"]) # if so sets the highest 
+
+			#check if the query to check duplicates reurn 0 results,if so adds the data to db
 			if len(check) == 0:
 
 
