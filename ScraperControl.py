@@ -6,14 +6,19 @@ import time
 from db_tools import DbTools
 from scrapers import scrapers
 
+
+"""this script takes highest article ids from the database and scrapes the next ids.and if found adds to db.
+it currently needs better error handlng routines.this also might be better with a cli with argumants"""
+
 c = DbTools()
 s = scrapers()
 conn = c.ConnectDb("articledb")
 t = 0
 while t == 0:
-	ids = c.last_update(conn)
+	ids = c.last_update(conn) #fetch the highest artcle id for all sources
 	sun = s.SunSoup()
 	print("now fetching sun")
+	#scraping loop
 	for i in range(-20,20):
 		try:
 			mihaaru = s.mihaaru(int(ids["mihaaru"]) + i)
@@ -43,7 +48,7 @@ while t == 0:
 			
 		
 
-		time.sleep(5)
+		time.sleep(5) # waits 5 seconds
 
 	
 

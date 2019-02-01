@@ -49,7 +49,7 @@ class utils(object):
 		for category in categories_dhivehi:
 			if category in unparsed_category:
 				category_n = categories_dhivehi.index(category)
-				category_english = categories_english[category_n]
+				category_english = categories_english[category_n] # gets category by replacing dhivehi category with english category that has the same index in its array
 				return(category_english)
 		if unparsed_category in categories_english:
 			return(unparsed_category)
