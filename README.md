@@ -32,7 +32,7 @@ This will ask for artcleids for sources.obtain this by going into sources home p
 ## For sites that dont provide api
 scarpercontrol gets the last articleid from the db and then tries to scrape the next 5 article ids.If articles are found it saves the highest artcile id 
 
-# For sites that Provide api 
+## For sites that Provide api 
 its juts parses the data 
 
 
