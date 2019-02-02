@@ -77,6 +77,34 @@ class scrapers(object):
 			i += 1
 
 		return (valid_data)
+		
+	def sun(self,id):
+
+		url = "https://sun.mv/"+str(id)
+		html = requests.get(url)
+		parsed_html = BeautifulSoup(html.text,'html.parser')
+
+		if len(parsed_html) >= 4:
+			headline = (parsed_html.h1).get_text()
+			image = parsed_html.find("figure").find("img")["src"]
+			time_tag = parsed_html.find("span",{"class":"time"}).get_text()
+			category = ""
+			author = ""
+
+			#get the article content
+			article_div = parsed_html.find("div",{"class","component-article-content clearfix"}).find_all("p")
+			article = ""
+			for x in article_div:
+				article += "\n" + x.get_text()
+
+			u = utils()
+			valid_data = self.u.ParseData(url,headline,image,author,category,article,time_tag,"sun",id)
+
+			return(valid_data)
+
+
+
+
 
 	
 
@@ -86,6 +114,11 @@ class scrapers(object):
 		url = "https://avas.mv/"+str(id)
 		html = requests.get(url)
 		parsed_html = BeautifulSoup(html.text,'html.parser')
+
+
+
+
+
 		
 
 
