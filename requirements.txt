@@ -1,5 +1,5 @@
 beautifulsoup4
 mysql-connector
 dateparser
-requests
 python-dotenv
+requests
