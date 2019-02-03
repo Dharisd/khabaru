@@ -1,3 +1,4 @@
+from settings import dbpassword, dbusername
 import  mysql.connector
 
 class DbTools(object):
@@ -10,8 +11,8 @@ class DbTools(object):
 	def ConnectDb(self,dbname):
 		db = mysql.connector.connect(
 			host="127.0.0.1",
-			user="root",
-			password = "1234",
+			user= dbusername,
+			password = dbpassword,
 			database = dbname
 			)
 		return(db)
