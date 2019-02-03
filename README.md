@@ -19,6 +19,17 @@ This expects the db to have the following credentials
 username=root
 password = ""
 
+### Adding credentials to .env file
+```
+cp .env.example .env
+```
+This will create a file called .env
+
+DBUSER represents database username
+DBPASS represents database password
+
+Edit the following credentials according to your database setup.
+
 this method needs to be revised
 ```
 python db_setup.py
