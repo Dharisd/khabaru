@@ -9,8 +9,9 @@ class DbTools(object):
 	#the official db connector
 	'''this method of storing password in txt file needs to be avoided paswords need to be  stored in enviroment variable'''
 	def ConnectDb(self,dbname):
+		print(dbusername,dbpassword)
 		db = mysql.connector.connect(
-			host="127.0.0.1",
+			host="localhost",
 			user= dbusername,
 			password = dbpassword,
 			database = dbname
@@ -85,7 +86,9 @@ class DbTools(object):
 			#print(source,c_highest[source]," ",valid_data["id"])
 
 			#this checks whether the provided id is the highest for the source
+			print(int(c_highest[source]),valid_data["id"])
 			if int(c_highest[source]) < valid_data["id"]:
+
 				self.SetHighest(conn,source,valid_data["id"]) # if so sets the highest 
 
 			#check if the query to check duplicates reurn 0 results,if so adds the data to db
@@ -99,6 +102,7 @@ class DbTools(object):
 				conn.commit()
 				return(True)
 			else:
+				print("the article is already present")
 				return(False)
 
 
