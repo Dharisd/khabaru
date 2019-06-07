@@ -35,14 +35,15 @@ class DbTools(object):
 
 
 		#loop over all sources to get the id from which we start to scrape from  (to obtain thos goto the sources home pageand click on an article and get its id)
-		for x in self.sources:
-			last =  input("enter highest for " + x)
-			print(x+":",last)
-			val  = (x,last)
+		with open("highest_ids.txt") as f:
+			high_id = f.readlines() #this needs to formated as json
+		
+		for x in range(0,len(self.sources)):
+			val  = (self.sources[x],high_id[x])
 			c.execute(source_sql,val)
 		db.commit()
 		#now we create table for thee content table
-		c.execute("CREATE TABLE content_db (id INT AUTO_INCREMENT PRIMARY KEY,source VARCHAR(255), url VARCHAR(255),headline VARCHAR(255),image VARCHAR(255),author VARCHAR(255),datetime TIME(6),category VARCHAR(255),article VARCHAR(3000),article_id VARCHAR(255))")
+		c.execute("CREATE TABLE content_db (id INT AUTO_INCREMENT PRIMARY KEY,source VARCHAR(255), url VARCHAR(255),headline VARCHAR(255),image VARCHAR(255),author VARCHAR(255),datetime DATETIME(6),category VARCHAR(255),article VARCHAR(3000),article_id VARCHAR(255))")
 		db.commit()
 
 
@@ -86,7 +87,7 @@ class DbTools(object):
 			#print(source,c_highest[source]," ",valid_data["id"])
 
 			#this checks whether the provided id is the highest for the source
-			print(int(c_highest[source]),valid_data["id"])
+			#print(int(c_highest[source]),valid_data["id"])
 			if int(c_highest[source]) < valid_data["id"]:
 
 				self.SetHighest(conn,source,valid_data["id"]) # if so sets the highest 

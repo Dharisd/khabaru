@@ -21,7 +21,7 @@ class scrapers(object):
 		
 		try:
 			url = "https://mihaaru.com/news/"+str(id)
-			page = requests.get(url)
+			page = requests.get(url,timeout=30)
 			html = page.text
 			#parse the received html
 			parsed_html =  BeautifulSoup(html, 'html.parser')
@@ -48,7 +48,7 @@ class scrapers(object):
 				parsed_data = self.u.ParseData(url,headline,image,author,category,article,time,"mihaaru",id)
 			
 		except:
-			print("the article {} not foundreturning empty array \n".format(id))
+			print(" {} not found \n".format(id))
 			parsed_data = self.u.ParseData("","","","","","","","mihaaru",id)
 			  
 
@@ -86,7 +86,7 @@ class scrapers(object):
 	def sun(self,id):
 
 		url = "https://sun.mv/"+str(id)
-		html = requests.get(url)
+		html = requests.get(url,timeout=30)
 		parsed_html = BeautifulSoup(html.text,'html.parser')
 
 
@@ -111,7 +111,7 @@ class scrapers(object):
 				return(valid_data)
 
 		except:
-			print("the article {} not found returning empty array \n".format(id))
+			print("{} not found".format(id))
 			valid_data = self.u.ParseData("","","","","","","","sun",id)
 			
 			
@@ -130,7 +130,7 @@ class scrapers(object):
 	def avas(self,id):
    		#please pu try block here
 		url = "https://avas.mv/"+str(id)
-		html = requests.get(url)
+		html = requests.get(url,timeout=30)
 		parsed_html = BeautifulSoup(html.text,'html.parser')
 
 		try:
@@ -156,7 +156,7 @@ class scrapers(object):
 
 
 		except:
-			print("the article {} not found returning empty array \n".format(id))
+			print("{} not found".format(id))
 			valid_data = self.u.ParseData("","","","","","","","avas",id)			
 			
 			return(valid_data)
@@ -177,7 +177,7 @@ class scrapers(object):
 	#vfp is cnm now
 	def vfp(self,id):
 		url = "https://cnm.mv/f/?id=" + str(id)
-		html = requests.get(url)
+		html = requests.get(url,timeout=30)
 		parsed_html = BeautifulSoup(html.text,'html.parser')
 		
 		
@@ -203,7 +203,7 @@ class scrapers(object):
 
 
 		except:
-			print("the article {} not found returning empty array \n".format(id))
+			print("{} not found".format(id))
 			valid_data = self.u.ParseData("","","","","","","","vfp",id)	
 
 
@@ -211,7 +211,7 @@ class scrapers(object):
 	def psm(self,id):
 		
 		url = "https://psmnews.mv/" + str(id)
-		html = requests.get(url)
+		html = requests.get(url,timeout=30)
 		parsed_html = BeautifulSoup(html.text,'html.parser')
 
 
@@ -231,7 +231,7 @@ class scrapers(object):
 				return (valid_data)
 
 		except:
-			print("the article {} not found returning empty array \n".format(id))
+			print("{} not found".format(id))
 			valid_data = self.u.ParseData("","","","","","","","psm",id)
 			return (valid_data)		
 		

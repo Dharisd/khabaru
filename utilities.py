@@ -1,4 +1,5 @@
 import dateparser
+import datetime
 import re
 
 #this file will contain the utilities like texting text parser and date parsers that the scraper needs
@@ -37,7 +38,8 @@ class utils(object):
 			date = dateparser.parse(unparsed_date)
 			return(date)
 		except:
-			return("error")
+			time = datetime.datetime.now()
+			return(time)
 
 
 

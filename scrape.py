@@ -14,36 +14,58 @@ c = DbTools()
 s = scrapers()
 conn = c.ConnectDb("articledb")
 t = 0
+
+
+
+
+def printStats(source,idxs):
+	print("{0}: current:{1} fetching:{2} \n".format(source,(idxs[source]),(int(idxs[source]) + i)))
+
+
+
+
+
+
+
+
+
+
+
+
+
 while t == 0:
 	ids = c.last_update(conn) #fetch the highest artcle id for all sources
 	print(ids)
 
 
 
-	for i in range(-5,5):
+	for i in range(-5,20):
 		try:
-			print(i)
+
+			ids = c.last_update(conn) #fetch the highest artcle id for all sources
+			print(ids)
+			print("trying {} --------------------------------------".format(i))
 		
-			print("now fetching mihaaru" )
+			printStats("mihaaru",ids)
 			mihaaru = s.mihaaru(int(ids["mihaaru"]) + i)
 			c.add_db(conn,mihaaru,ids)
 			
-			print("now fetching avas" ) 
+
+			printStats("avas",ids)
 			avas = s.avas(int(ids["avas"]) + i)
 			c.add_db(conn,avas,ids)
 			
-			print("now fetching vfp" )
+			printStats("vfp",ids)
 			vfp = s.vfp(int(ids["vfp"]) + i) 
 			c.add_db(conn,vfp,ids)
 			
-			print("now fetching psm")
+			printStats("psm",ids)
 			psm = s.psm(int(ids["psm"]) + i)
 			c.add_db(conn,psm,ids)
 			 
-			print("now fetching sun") 
+			printStats("sun",ids)
 			sun = s.sun(int(ids["sun"]) + i)
 			c.add_db(conn,sun,ids)
-			
 
 		except Exception as ex:
 			template = "An exception of type {0} occurred. Arguments:\n{1!r} \n"
@@ -54,7 +76,7 @@ while t == 0:
 			
 		
 
-		#time.sleep(60) # waits 5 seconds
+	#time.sleep(5) # waits 5 seconds
 
 
 		#hows the speed on this thi
