@@ -10,4 +10,4 @@ load_dotenv(dotenv_path)
 
 # Accessing variables.
 dbusername = os.getenv('DBUSER')
-dbpassword = os.getenv('DBPASS')
+dbpassword = os.getenv('MARIADB_ROOT_PASSWORD')
